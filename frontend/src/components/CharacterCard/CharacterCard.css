@@ -6,9 +6,37 @@
    background-color: #212121;
    border-radius: 15px;
    transition: 0.1s ease;
+   display: flex;
+   justify-content: space-evenly;
+   align-items: center;
 }
 
 .characterCard:hover {
    cursor: pointer;
    transform: scale(1.02);
+}
+
+.character-image {
+   width: 60%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-image: url("../../images/question_mark.png");
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+}
+
+.character-text {
+   width: 40%;
+   flex-direction: column;
+   text-align: center;
+   padding: 10px;
+   font-size: 23px;
+}
+
+.character-name,
+.character-description {
+   margin: 20px 0;
 }
