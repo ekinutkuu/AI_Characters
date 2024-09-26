@@ -1,19 +1,16 @@
 import "./App.css";
-import CharacterCard from "./components/CharacterCard/CharacterCard";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import CharacterSelection from "./pages/CharacterSelection";
 
 function App() {
    return (
-      <div className="App">
-         <div className="characterCards">
-            <CharacterCard />
-            <CharacterCard />
-            <CharacterCard />
-            <CharacterCard />
-            <CharacterCard />
-            <CharacterCard />
-            <CharacterCard />
+      <Router>
+         <div className="App">
+            <Routes>
+               <Route path="/" element={<CharacterSelection />} />
+            </Routes>
          </div>
-      </div>
+      </Router>
    );
 }
 
