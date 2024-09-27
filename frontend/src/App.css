@@ -9,9 +9,3 @@ body {
    width: auto;
    background-color: #2f2f2f;
 }
-
-.characterCards {
-   display: flex;
-   flex-wrap: wrap;
-   padding: 10px;
-}

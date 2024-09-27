@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import CharacterSelection from "./pages/CharacterSelection";
+import CharacterSelection from "./pages/CharacterSelection/CharacterSelection";
 
 function App() {
    return (
