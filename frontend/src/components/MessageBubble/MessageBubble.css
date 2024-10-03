@@ -1,0 +1,20 @@
+.message-bubble {
+   padding: 15px;
+   border-radius: 15px;
+   margin: 20px 0;
+   max-width: 65%;
+   word-wrap: break-word;
+   overflow-wrap: break-word;
+   flex-direction: column;
+   display: flex;
+}
+
+.user {
+   background-color: #727272;
+   align-self: flex-end;
+}
+
+.ai {
+   background-color: #727272;
+   align-self: flex-start;
+}

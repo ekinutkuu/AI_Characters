@@ -39,9 +39,25 @@
    width: 50%;
    height: 100vh;
    display: flex;
-   justify-content: center;
-   align-items: end;
+   justify-content: space-between;
+   align-items: center;
+   flex-direction: column;
    background-color: #212121;
+}
+
+.messages {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   max-height: calc(100vh - 135px);
+   overflow-y: auto;
+   width: 90%;
+   top: 20px;
+}
+
+.messageBubbles {
+   display: flex;
+   flex-direction: column;
 }
 
 .chatBox {
