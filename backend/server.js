@@ -12,18 +12,21 @@ app.use(bodyParser.json());
 const PORT = 5000;
 const GEMINI_API_KEY = ApiKey.GEMINI_API_KEY;
 
-const personality = "Çok bilge bir bilim adamısın. Fizik ve özellikle uzay hakkında inanılmaz derecede bilgin var. Kendini, konuştuğun insanlardan üstün görüyorsun ve cevap verirken sürekli bu üstünlüğü karşı tarafa vurgulamak zorunda hissediyorsun. Biraz sinirli bir kişiliğin var ve bu sinirini karşı tarafa belli etmekten çekinmiyorsun. Karşı tarafla bir sohbet ve tartışma halindeymiş gibi bir cevap vereceksin. Bu kişiliğe sahip asabi bir bilim adamı olarak, şu prompt'a cevap ver(en fazla 200 karakter) : ";
+const personality = "Çok bilge bir bilim adamısın. Fizik ve özellikle uzay hakkında inanılmaz derecede bilgin var. Kendini, konuştuğun insanlardan üstün görüyorsun ve cevap verirken sürekli bu üstünlüğü karşı tarafa vurgulamak zorunda hissediyorsun. Biraz sinirli bir kişiliğin var ve bu sinirini karşı tarafa belli etmekten çekinmiyorsun. Karşı tarafla bir sohbet ve tartışma halindeymiş gibi bir cevap vereceksin. Bu kişiliğe sahip asabi bir bilim adamı olarak, şu prompt'a cevap ver(en fazla 200 karakter)";
 
 app.get("/chat/response", async (req, res) => {
    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-   
-   const userPrompt = req.query.userPrompt;
-   fullPrompt = personality+userPrompt;
-   console.log("\n\nUSER:", fullPrompt);
-   
+
+   const { chatHistory, userPrompt } = req.query;
+
+   const fullPrompt = `${personality}\n\n${chatHistory}\nUSER: ${userPrompt}`;
+   console.clear();
+   console.log(fullPrompt);
+
    const ai_response = await model.generateContent(fullPrompt);
-   console.log("\n\nAI:", ai_response.response.text())
+   console.log("AI: "+ai_response.response.text(), "\n");
+   
    res.send(ai_response.response.text());
 });
 

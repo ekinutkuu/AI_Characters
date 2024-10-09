@@ -12,7 +12,6 @@ const ChatPage = () => {
 
    const changeUserInputHandler = (event) => {
       setUserInput(event.target.value);
-      console.log(event.target.value);
    };
 
    const sendMessageHandler = async () => {
@@ -24,11 +23,13 @@ const ChatPage = () => {
       ]);
 
       try {
-         const aiResponse = await getAIResponse(userInput);
+         const chatHistory = messages.map(msg => `${msg.isUser ? 'USER' : 'AI'}: ${msg.text}`).join('\n');
+         const aiResponse = await getAIResponse(chatHistory, userInput);
          setMessages((prevMessages) => [
             ...prevMessages,
             { text: aiResponse, isUser: false },
          ]);
+         console.log(`${chatHistory}\nUSER: ${userInput}\nAI: ${aiResponse}`);
       } catch(error) {
          console.error("Failed to send message:", error)
       } finally {
