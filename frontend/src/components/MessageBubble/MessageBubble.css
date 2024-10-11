@@ -1,6 +1,5 @@
 .message-bubble {
    padding: 15px;
-   border-radius: 15px;
    margin: 20px 0;
    max-width: 65%;
    word-wrap: break-word;
@@ -10,11 +9,13 @@
 }
 
 .user {
-   background-color: #727272;
+   background-color: #474747;
+   border-radius: 18px 4px 18px 18px;
    align-self: flex-end;
 }
 
 .ai {
-   background-color: #727272;
+   background-color: #474747;
+   border-radius: 4px 18px 18px 18px;
    align-self: flex-start;
 }

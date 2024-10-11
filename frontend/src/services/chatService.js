@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_API_URL = "http://localhost:5000";
+//const BASE_API_URL = "http://localhost:5000";
 
 export const getAIResponse = async (chatHistory, userPrompt) => {
    try {

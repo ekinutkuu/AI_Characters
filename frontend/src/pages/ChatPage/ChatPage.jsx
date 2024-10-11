@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import style from "./ChatPage.module.css";
 import MessageBubble from "../../components/MessageBubble/MessageBubble";
-import { chatService, getAIResponse } from "../../services/chatService";
+import { getAIResponse } from "../../services/chatService";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
@@ -9,6 +9,11 @@ const ChatPage = () => {
 
    const [userInput, setUserInput] = useState('');
    const [messages, setMessages] = useState([]);
+   const messagesEndRef = useRef(null);
+
+   useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+   }, [messages]);
 
    const changeUserInputHandler = (event) => {
       setUserInput(event.target.value);
@@ -16,6 +21,8 @@ const ChatPage = () => {
 
    const sendMessageHandler = async () => {
       if (!userInput.trim()) return;
+
+      setUserInput('');
 
       setMessages((prevMessages) => [
          ...prevMessages,
@@ -32,8 +39,6 @@ const ChatPage = () => {
          console.log(`${chatHistory}\nUSER: ${userInput}\nAI: ${aiResponse}`);
       } catch(error) {
          console.error("Failed to send message:", error)
-      } finally {
-         setUserInput('');
       }
    }
 
@@ -55,6 +60,7 @@ const ChatPage = () => {
                         isUser={message.isUser}
                      />
                   ))}
+                  <div ref={messagesEndRef} />
                </div>
             </div>
             <div className={style.chatBox}>
@@ -63,6 +69,9 @@ const ChatPage = () => {
                   placeholder="Type something to start conversation"
                   value={userInput} 
                   onChange={changeUserInputHandler}
+                  onKeyDown={(e) => {
+                     if (e.key === 'Enter') sendMessageHandler();
+                  }}
                />
                <button onClick={sendMessageHandler}>
                   <FontAwesomeIcon icon={faArrowRight} />
