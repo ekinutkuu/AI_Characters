@@ -1,8 +1,9 @@
 .characterCard {
-   width: calc(25% - 20px);
+   width: calc(25% - 40px);
    height: auto;
    aspect-ratio: 1.8/1;
    margin: 10px;
+   padding: 10px;
    background-color: #212121;
    border-radius: 15px;
    transition: 0.1s ease;

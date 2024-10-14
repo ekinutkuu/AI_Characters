@@ -1,7 +1,7 @@
 import React, {useState, useRef, useEffect} from "react";
 import style from "./ChatPage.module.css";
 import MessageBubble from "../../components/MessageBubble/MessageBubble";
-import { getAIResponse } from "../../services/chatService";
+import { getAIResponse, getAIEmotion } from "../../services/chatService";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
@@ -9,6 +9,7 @@ const ChatPage = () => {
 
    const [userInput, setUserInput] = useState('');
    const [messages, setMessages] = useState([]);
+   const [emotion, setEmotion] = useState('Amadeus is waiting for you to start a conversation...');
    const messagesEndRef = useRef(null);
 
    useEffect(() => {
@@ -37,8 +38,12 @@ const ChatPage = () => {
             { text: aiResponse, isUser: false },
          ]);
          console.log(`${chatHistory}\nUSER: ${userInput}\nAI: ${aiResponse}`);
+         const aiEmotion = await getAIEmotion(aiResponse);
+         setEmotion(aiEmotion);
+         console.log("Emotion:", aiEmotion);
       } catch(error) {
-         console.error("Failed to send message:", error)
+         console.error("Failed to send message:", error);
+         setEmotion("Emotion could not be analyzed");
       }
    }
 
@@ -46,7 +51,7 @@ const ChatPage = () => {
       <div className={style.container}>
          <div className={style.avatarContainer}>
             <div className={style.emotionBox}>
-               <p>Amadeus is waiting for you to start a conversation...</p>
+               <p>{emotion}</p>
             </div>
             <div className={style.avatar}></div>
          </div>
