@@ -9,7 +9,7 @@ function App() {
          <div className="App">
             <Routes>
                <Route path="/" element={<CharacterSelection />} />
-               <Route path="/chat" element={<ChatPage />} />
+               <Route path="/chat/:characterName" element={<ChatPage />} />
             </Routes>
          </div>
       </Router>

@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
+import { useLocation } from 'react-router-dom';
 import style from "./ChatPage.module.css";
 import MessageBubble from "../../components/MessageBubble/MessageBubble";
 import { getAIResponse, getAIEmotion } from "../../services/chatService";
@@ -6,11 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 const ChatPage = () => {
-
+   const location = useLocation();
+   const { character } = location.state || {};
    const [userInput, setUserInput] = useState('');
    const [messages, setMessages] = useState([]);
    const [emotion, setEmotion] = useState('Amadeus is waiting for you to start a conversation...');
    const messagesEndRef = useRef(null);
+
+   console.log(character); /* for testing */
 
    useEffect(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
