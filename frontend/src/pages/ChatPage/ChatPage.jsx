@@ -14,8 +14,6 @@ const ChatPage = () => {
    const [emotion, setEmotion] = useState('Amadeus is waiting for you to start a conversation...');
    const messagesEndRef = useRef(null);
 
-   console.log(character); /* for testing */
-
    useEffect(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
    }, [messages]);
@@ -36,13 +34,13 @@ const ChatPage = () => {
 
       try {
          const chatHistory = messages.map(msg => `${msg.isUser ? 'USER' : 'AI'}: ${msg.text}`).join('\n');
-         const aiResponse = await getAIResponse(chatHistory, userInput);
+         const aiResponse = await getAIResponse(character.personality, userInput, chatHistory);
          setMessages((prevMessages) => [
             ...prevMessages,
             { text: aiResponse, isUser: false },
          ]);
          console.log(`${chatHistory}\nUSER: ${userInput}\nAI: ${aiResponse}`);
-         const aiEmotion = await getAIEmotion(aiResponse);
+         const aiEmotion = await getAIEmotion(character.name, aiResponse);
          setEmotion(aiEmotion);
          console.log("Emotion:", aiEmotion);
       } catch(error) {

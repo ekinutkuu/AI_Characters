@@ -39,7 +39,6 @@ const CharacterSelection = () => {
             <CharacterCard />
             <CharacterCard />
             <CharacterCard />
-            <CharacterCard />
          </div>
       </div>
    );

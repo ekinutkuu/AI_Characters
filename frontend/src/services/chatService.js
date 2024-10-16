@@ -2,12 +2,13 @@ import axios from "axios";
 
 const BASE_API_URL = "http://localhost:5000";
 
-export const getAIResponse = async (chatHistory, userPrompt) => {
+export const getAIResponse = async (characterPersonality, userPrompt, chatHistory) => {
    try {
       const response = await axios.get(`${BASE_API_URL}/chat/response`, {
          params: {
-            chatHistory: chatHistory,
-            userPrompt: userPrompt 
+            characterPersonality: characterPersonality,
+            userPrompt: userPrompt ,
+            chatHistory: chatHistory
          },
       });
       return response.data;
@@ -17,10 +18,11 @@ export const getAIResponse = async (chatHistory, userPrompt) => {
    }
 };
 
-export const getAIEmotion = async (AIResponse) => {
+export const getAIEmotion = async (characterName, AIResponse) => {
    try {
       const emotion = await axios.get(`${BASE_API_URL}/chat/emotion`, {
          params: {
+            characterName: characterName,
             AIResponse: AIResponse
          },
       });
