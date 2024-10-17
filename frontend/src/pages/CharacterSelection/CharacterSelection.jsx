@@ -23,7 +23,9 @@ const CharacterSelection = () => {
    return (
       <div className="container">   
          <div className={style.buttons}>
-            <button className={style.button}><FontAwesomeIcon icon={faPlus} /></button>
+            <button className={style.button} onClick={() => navigate("/character/add")}>
+               <FontAwesomeIcon icon={faPlus} />
+            </button>
             <button className={style.button}><FontAwesomeIcon icon={faPenToSquare} /></button>
          </div>
          <div className={style.characterCards}>
