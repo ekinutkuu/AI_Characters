@@ -13,10 +13,13 @@ const CharacterAdd = () => {
    return (
       <div className={style.container}>
          <div className={style.nameContainer}>
-            <p>Name</p>
+            <div className={style.titleTexts}>
+               <p class={style.title}>Name</p>
+               <p class={style.explanation}>- Name of Your Character</p>
+            </div>
             <input
                type="text"
-               placeholder="Name of Your Character - e.g. Amadeus"
+               placeholder="e.g. Amadeus"
                maxLength={maxLenghtName}
                value={name}
                onChange={(e) => setName(e.target.value)}
@@ -26,10 +29,13 @@ const CharacterAdd = () => {
             </div>
          </div>
          <div className={style.descriptionContainer}>
-            <p>Description</p>
+            <div className={style.titleTexts}>
+               <p class={style.title}>Description</p>
+               <p class={style.explanation}>- Short Description of Your Character</p>
+            </div>
             <input
                type="text"
-               placeholder="Short Description of Your Character - e.g. Mad Scientist"
+               placeholder="e.g. Mad Scientist"
                maxLength={maxLenghtDescription}
                value={description}
                onChange={(e) => setDescription(e.target.value)}
@@ -39,9 +45,12 @@ const CharacterAdd = () => {
             </div>
          </div>
          <div className={style.personalityContainer}>
-            <p>Personality</p>
+            <div className={style.titleTexts}>
+               <p class={style.title}>Personality</p>
+               <p class={style.explanation}>- Detailed Description of Your Character's Personality</p>
+            </div>
             <textarea
-               placeholder="Detailed Description of Your Character's Personality - e.g. You are a very wise scientist. You possess incredible knowledge of physics. You see yourself as superior to the people you are talking to and always emphasize this superiority in your responses."
+               placeholder="e.g. You are a very wise scientist. You possess incredible knowledge of physics. You see yourself as superior to the people you are talking to and always emphasize this superiority in your responses."
                maxLength={maxLenghtPersonality}
                value={personality}
                onChange={(e) => setPersonality(e.target.value)}

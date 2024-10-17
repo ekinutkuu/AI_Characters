@@ -21,13 +21,26 @@
    background-color: #252525;
 }
 
-.nameContainer p,
-.descriptionContainer p,
-.personalityContainer p {
-   margin: 10px 20px;
-   height: calc(35% - 20px);
+.personalityContainer {
+   height: 300px;
+}
+
+.titleTexts {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+}
+
+.title {
+   margin: 5px 8px 5px 25px;
    font-size: 23px;
    color: #dddddd;
+}
+
+.explanation {
+   margin: 5px 0 5px 0;
+   font-size: 14px;
+   color: #636363;
 }
 
 .nameContainer input,
@@ -57,29 +70,27 @@
    color: #c2c2c2;
 }
 
-.personalityContainer {
-   height: 300px;
-}
-
-.personalityContainer p {
-   height: calc(14% - 20px);
-}
-
 .personalityContainer textarea {
-   height: calc(81% - 40px);
+   height: calc(80% - 40px);
    padding: 10px;
+   margin: 10px 20px;
    line-height: 1.23;
    resize: none;
 }
 
 .characterLimit {
    position: absolute;
-   bottom: 13px;
-   right: 10px;
+   bottom: 25px;
+   right: 30px;
 }
 
 .characterLimit p {
    font-size: 12px;
+   color: #dddddd;
+}
+
+.personalityContainer .characterLimit {
+   bottom: 30px;
 }
 
 .addButton {
