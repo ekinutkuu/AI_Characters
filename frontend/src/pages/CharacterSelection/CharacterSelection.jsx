@@ -37,10 +37,6 @@ const CharacterSelection = () => {
                   onClick={() => handleCharacterSelect(character)}
                />
             ))}
-            <CharacterCard />
-            <CharacterCard />
-            <CharacterCard />
-            <CharacterCard />
          </div>
       </div>
    );

@@ -61,6 +61,7 @@
 .descriptionContainer input:focus,
 .personalityContainer textarea:focus {
    outline: 1px solid #a3a3a3;
+   box-shadow: 0 0 8px 0 #aaaaaa;
 }
 
 .nameContainer input::placeholder,

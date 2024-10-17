@@ -11,7 +11,7 @@ const ChatPage = () => {
    const { character } = location.state || {};
    const [userInput, setUserInput] = useState('');
    const [messages, setMessages] = useState([]);
-   const [emotion, setEmotion] = useState('Amadeus is waiting for you to start a conversation...');
+   const [emotion, setEmotion] = useState(`${character.name} is waiting for you to start a conversation...`);
    const messagesEndRef = useRef(null);
 
    useEffect(() => {
