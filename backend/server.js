@@ -22,8 +22,11 @@ app.get("/chat/response", async (req, res) => {
    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+   const responseRequest = `Bu kişiliğe sahip birisi olarak, şu prompt'a cevap ver: `;
+   const rules = `KURALLAR: Cevap verirken en fazla 200-250 karakter kullan.`;
+
    const { characterPersonality, userPrompt, chatHistory } = req.query;
-   const fullPrompt = `${characterPersonality}\n\n${chatHistory}\nUSER: ${userPrompt}`;
+   const fullPrompt = `${rules}\n\n${characterPersonality}\n${responseRequest}\n\n${chatHistory}\nUSER: ${userPrompt}`;
    console.clear();
    console.log(fullPrompt);
 
