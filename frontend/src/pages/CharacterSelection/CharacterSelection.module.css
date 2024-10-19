@@ -31,3 +31,10 @@
    flex-wrap: wrap;
    padding: 10px;
 }
+
+/* Responsive Design */
+@media only screen and (max-width: 768px) {
+   .buttons {
+      margin-top: 10px;
+   }
+}

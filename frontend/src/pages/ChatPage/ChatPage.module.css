@@ -78,8 +78,9 @@
 .chatBox {
    display: flex;
    position: relative;
-   width: 77%;
-   height: 55px;
+   width: 75%;
+   height: 48px;
+   padding: 5px 10px;
    bottom: 40px;
    align-items: center;
    justify-content: space-evenly;
@@ -114,4 +115,37 @@
 .chatBox button:hover {
    cursor: pointer;
    background-color: #858585;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 768px) {
+   .container {
+      flex-direction: column;
+   }
+
+   .avatarContainer {
+      width: 100%;
+      height: 50vh;
+   }
+
+   .chatContainer {
+      width: 100%;
+      height: 50vh;
+   }
+
+   .emotionBox {
+      font-size: 12px;
+   }
+
+   .messages {
+      max-height: calc(50vh - 135px);
+   }
+
+   .chatBox {
+      height: 38px;
+   }
+
+   .chatBox input {
+      font-size: 13px;
+   }
 }
