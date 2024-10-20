@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect, useCallback} from "react";
 import { useLocation } from 'react-router-dom';
 import style from "./ChatPage.module.css";
 import MessageBubble from "../../components/MessageBubble/MessageBubble";
@@ -9,23 +9,32 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 const ChatPage = () => {
    const location = useLocation();
    const { character } = location.state || {};
-   const [avatar, setAvatar] = useState('normal');
-   const [avatarUrl, setAvatarUrl] = useState('url(/images/normal.png)');
+   const [avatar, setAvatar] = useState(character.emotions.includes("normal") ? 'normal' : `${character.emotions[0]}`);
    const [emotion, setEmotion] = useState(`${character.name} is waiting for you to start a conversation...`);
    const [userInput, setUserInput] = useState('');
    const [messages, setMessages] = useState([]);
    const messagesEndRef = useRef(null);
 
-   const getAvatarUrl = (avatar) => `url(/images/${avatar}.png)`;
+   const getAvatarUrl = useCallback((avatar) => {
+      const avatarPath = character.customAvatar === 1 
+      ? `/avatars/${character.name.toLowerCase()}/${avatar}.png` 
+      : `/avatars/default/${avatar}.png`;
+
+      const img = new Image();
+      img.src = avatarPath;
+      img.onerror = () => {
+         console.error(`${avatar} emotion not found for ${character.name}\nAttempted File Path: ${avatarPath}`);
+      }
+      return `url(${avatarPath})`;
+   }, [character.customAvatar, character.name]);
+
+   const [avatarUrl, setAvatarUrl] = useState(getAvatarUrl(avatar));
 
    useEffect(() => {
       if (character.emotions.includes(avatar)) {
          setAvatarUrl(getAvatarUrl(avatar));
-      } else {
-         setAvatarUrl('url(/images/normal.png)');
-         console.error("Avatar Change Error: Avatar with the appropriate emotion could not be found!");
-      }
-   }, [avatar]);
+      } else console.error("Avatar Change Error: Avatar with the appropriate emotion could not be found!");
+   }, [avatar, character.emotions, character.customAvatar, getAvatarUrl]);
 
    useEffect(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -46,6 +55,7 @@ const ChatPage = () => {
       ]);
 
       try {
+         // Chat Response (and chat history)
          const chatHistory = messages.map(msg => `${msg.isUser ? 'USER' : 'AI'}: ${msg.text}`).join('\n');
          const aiResponse = await getAIResponse(character.personality, userInput, chatHistory);
          setMessages((prevMessages) => [
@@ -53,12 +63,16 @@ const ChatPage = () => {
             { text: aiResponse, isUser: false },
          ]);
          console.log(`${chatHistory}\nUSER: ${userInput}\nAI: ${aiResponse}`);
+         // Character Emotion Text
          const aiEmotion = await getAIEmotion(character.name, aiResponse);
          setEmotion(aiEmotion);
          console.log("Emotion:", aiEmotion);
-         const avatarEmotion = await getAvatarEmotion(aiEmotion, character.emotions);
-         console.log("Avatar Emotion:", avatarEmotion);
-         setAvatar(avatarEmotion);
+         // Avatar Emotion
+         if (character.emotions.length > 0) { // remove the if block in the future when each character will have at least one emotion
+            const avatarEmotion = await getAvatarEmotion(aiEmotion, character.emotions);
+            console.log("Avatar Emotion:", avatarEmotion);
+            setAvatar(avatarEmotion);
+         } else console.log("Avatar has no emotion!");
       } catch(error) {
          console.error("Failed to send message:", error);
          setEmotion("Emotion could not be analyzed");

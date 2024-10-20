@@ -18,11 +18,13 @@ const CharacterAdd = () => {
       }
 
       const emotions = [];
+      const customAvatar = 0;
       const newCharacter = {
          name,
          description,
          personality,
-         emotions
+         emotions,
+         customAvatar
       };
 
       try {
