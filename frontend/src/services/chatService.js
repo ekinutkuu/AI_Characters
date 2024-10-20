@@ -33,11 +33,12 @@ export const getAIEmotion = async (characterName, AIResponse) => {
    }
 };
 
-export const getAvatarEmotion = async (characterEmotion) => {
+export const getAvatarEmotion = async (characterEmotionText, hasEmotions) => {
    try {
       const avatarEmotion = await axios.get(`${BASE_API_URL}/chat/avatar`, {
          params: {
-            characterEmotion: characterEmotion
+            characterEmotionText: characterEmotionText,
+            hasEmotions: JSON.stringify(hasEmotions)
          },
       });
       return avatarEmotion.data;

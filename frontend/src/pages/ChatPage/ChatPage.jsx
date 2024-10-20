@@ -56,9 +56,9 @@ const ChatPage = () => {
          const aiEmotion = await getAIEmotion(character.name, aiResponse);
          setEmotion(aiEmotion);
          console.log("Emotion:", aiEmotion);
-         const avatarEmotion = await getAvatarEmotion(aiEmotion);
+         const avatarEmotion = await getAvatarEmotion(aiEmotion, character.emotions);
          console.log("Avatar Emotion:", avatarEmotion);
-         setAvatar(avatarEmotion.toLowerCase());
+         setAvatar(avatarEmotion);
       } catch(error) {
          console.error("Failed to send message:", error);
          setEmotion("Emotion could not be analyzed");
