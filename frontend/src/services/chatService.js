@@ -32,3 +32,16 @@ export const getAIEmotion = async (characterName, AIResponse) => {
       throw error;
    }
 };
+
+export const getAvatarEmotion = async (characterEmotion) => {
+   try {
+      const avatarEmotion = await axios.get(`${BASE_API_URL}/chat/avatar`, {
+         params: {
+            characterEmotion: characterEmotion
+         },
+      });
+      return avatarEmotion.data;
+   } catch (error) {
+      console.error("Error fetching avatar emotion:", error)
+   }
+};

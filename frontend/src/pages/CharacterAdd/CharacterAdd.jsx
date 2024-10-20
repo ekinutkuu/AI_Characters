@@ -17,10 +17,12 @@ const CharacterAdd = () => {
          return;
       }
 
+      const emotions = [];
       const newCharacter = {
          name,
          description,
-         personality
+         personality,
+         emotions
       };
 
       try {

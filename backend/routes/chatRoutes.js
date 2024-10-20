@@ -42,4 +42,25 @@ router.get("/emotion", async (req, res) => {
    res.send(cleanedText);
 });
 
+router.get("/avatar", async (req, res) => {
+   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+   const characterEmotion = req.query.characterEmotion.replace(/\n/g, '');
+   const prompt =
+   `Bir kişinin duygu durumu aşağıdaki gibi ifade edildi: "${characterEmotion}"
+   \nBu duygu durumunu analiz et ve aşağıdaki seçeneklerden en uygun olanını seç:
+   - Normal
+   - Happy
+   - Sad
+   - Angry
+   \nCevap olarak sadece seçtiğin seçeneği ver, noktalama işaretleri kullanma.`;
+
+   console.log(prompt);
+   avatarResponse = await model.generateContent(prompt);
+   const avatarEmotion = avatarResponse.response.text().replace(/\s+/g, '');
+   console.log("Avatar Emotion:", avatarEmotion);
+   res.send(avatarEmotion);
+});
+
 module.exports = router;
