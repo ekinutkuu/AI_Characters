@@ -20,3 +20,24 @@ export const addCharacter = async (newCharacter) => {
       throw error;
    }
 };
+
+export const uploadAvatar = async (formData) => {
+   try {
+      const response = await axios.post(`${BASE_API_URL}/character/upload-avatar`, formData, {
+         headers: {
+            "Content-Type": "multipart/form-data",
+         },
+      });
+      console.log(`${response.status}: ${response.data.message}`);
+      console.log(`Uploaded Avatars: ${response.data.files}`);
+      console.log(`Character has these emotions: ${response.data.emotions}`);
+      return response.data
+   } catch (error) {
+      if (error.response) {
+         console.error(`${error.response.status}: ${error.response.data.error}`);
+      } else {
+         console.error("Error Uploading Avatar:", error.message);
+      }
+      throw error;
+   }
+};

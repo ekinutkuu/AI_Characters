@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import style from "./CharacterAdd.module.css";
-import { addCharacter } from "../../services/characterService";
+import { addCharacter, uploadAvatar } from "../../services/characterService";
 
 const CharacterAdd = () => {
    const [name, setName] = useState('');
    const [description, setDescription] = useState('');
    const [personality, setPersonality] = useState('');
-   const [isCustomAvatar, setIsCustomAvatar] = useState(false);
+   const [emotions, setEmotions] = useState([]);
+   const [customAvatar, setCustomAvatar] = useState(0);
 
    const maxLenghtName = 20;
    const maxLenghtDescription = 35;
    const maxLenghtPersonality = 500;
 
    const handleCustomAvatarSelection = (event) => {
-      setIsCustomAvatar(event.target.value === 'yes'); //if selection box is "yes" then isCustomAvatar equal to true
+      setCustomAvatar(event.target.value === 'yes' ? 1 : 0); //if selection box is "yes" then customAvatar equal to 1 (which means true)
    };
 
    const customAvatarFileChange = (event, labelId) => {
@@ -23,21 +24,35 @@ const CharacterAdd = () => {
 
       label.innerHTML = label.innerHTML.replace(' ✔', '');
 
-      if (fileInput.files.length > 0) {
-         if (fileInput.files.length === 1) {
-            const fileType = fileInput.files[0].type;
-            if (!allowedTypes.includes(fileType)) {
-               alert("Only .png type is supported");
-               fileInput.value = "";
-               return;
-            }
-            label.innerHTML += ' ✔';
-         } else {
-            alert("Only 1 avatar per emotion!");
-         }
-      } else {
+      if (fileInput.files.length === 0) {
          alert("Please Select a Avatar!");
+         setEmotions(emotions.filter(emotion => emotion !== label.innerHTML.toLowerCase()));
+         return;
       }
+
+      if (fileInput.files.length > 1) {
+         alert("Only 1 avatar per emotion!");
+         setEmotions(emotions.filter(emotion => emotion !== label.innerHTML.toLowerCase()));
+         return;
+      }
+
+      const fileType = fileInput.files[0].type;
+      if (!allowedTypes.includes(fileType)) {
+         alert("Only .png type is supported");
+         fileInput.value = "";
+         return;
+      }
+
+      const currentEmotion = label.innerHTML.toLowerCase();
+      setEmotions(prevEmotions => {
+         const updatedEmotions = prevEmotions.filter(emotion => emotion !== currentEmotion);
+         if(!updatedEmotions.includes(currentEmotion)) {
+            updatedEmotions.push(currentEmotion);
+         }
+         return updatedEmotions;
+      });
+
+      label.innerHTML += ' ✔';
    };
 
    const handleAddCharacter = async () => {
@@ -46,25 +61,52 @@ const CharacterAdd = () => {
          return;
       }
 
-      const emotions = [];
-      const customAvatar = 0;
+      // if custom avatar is selected, verify that at least 1 avatar has been uploaded
+      if (customAvatar === 1) {
+         const emotionTypes = ["normal", "happy", "sad", "angry"];
+
+         const hasFileUploaded = emotionTypes.some(emotion => {
+            const fileInput = document.getElementById(`${emotion}-upload`);
+            return fileInput.files.length > 0;
+         });
+
+         if (!hasFileUploaded) {
+            alert("Please upload at least one avatar for your character!");
+            return;
+         }
+      }
+
       const newCharacter = {
          name,
          description,
          personality,
-         emotions,
+         emotions: customAvatar === 1 ? emotions : ["normal", "happy", "sad", "angry"],
          customAvatar
       };
 
       try {
          await addCharacter(newCharacter);
+         console.log("Character added successfully!");
+
+         if (customAvatar === 1) {
+            const formData = new FormData();
+            formData.append("characterName", newCharacter.name);
+            formData.append("customAvatar", newCharacter.customAvatar);
+            emotions.forEach(emotion => {
+               const fileInput = document.getElementById(`${emotion}-upload`);
+               if (fileInput.files.length > 0) {
+                  formData.append("avatars", fileInput.files[0], `${emotion}.png`);
+               }
+            });
+            await uploadAvatar(formData);
+            console.log("Character avatars uploaded successfully!");
+         } else console.log(`custom avatar value of '${newCharacter.name}' is ${newCharacter.customAvatar}, default avatar is used`);
+
          alert("Character added successfully!");
-         setName('');
-         setDescription('');
-         setPersonality('');
+         window.location.reload();
       } catch (error) {
          console.error("Error:", error.message);
-         alert("Failed to add character");
+         alert("Failed to add character!");
       }
    };
 
@@ -125,7 +167,7 @@ const CharacterAdd = () => {
             </select>
          </div>
          {/* Avatar Upload Section (Hidden by Default) */}
-         <div className={`${style.fileUploadContainer} ${isCustomAvatar ? style.visible : style.hidden}`}>
+         <div className={`${style.fileUploadContainer} ${customAvatar ? style.visible : style.hidden}`}>
             <label>Emotions for your character's avatar:</label>
             <div className={style.fileUploadInnerContainer}>
                <label id="normal-label">Normal</label>

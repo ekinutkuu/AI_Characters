@@ -16,14 +16,15 @@ const ChatPage = () => {
    const messagesEndRef = useRef(null);
 
    const getAvatarUrl = useCallback((avatar) => {
+      const cleanedCharacterName = character.name.toLowerCase().trim().replace(/\s+/g, '_');
       const avatarPath = character.customAvatar === 1 
-      ? `/avatars/${character.name.toLowerCase()}/${avatar}.png` 
+      ? `/avatars/${cleanedCharacterName}/${avatar}.png` 
       : `/avatars/default/${avatar}.png`;
 
       const img = new Image();
       img.src = avatarPath;
       img.onerror = () => {
-         console.error(`${avatar} emotion not found for ${character.name}\nAttempted File Path: ${avatarPath}`);
+         console.error(`${avatar} emotion not found for '${character.name}'\nAttempted File Path: ${avatarPath}`);
       }
       return `url(${avatarPath})`;
    }, [character.customAvatar, character.name]);
