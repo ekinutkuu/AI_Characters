@@ -15,11 +15,8 @@ const storage = multer.diskStorage ({
          if (!fs.existsSync(dirPath)) {
             fs.mkdirSync(dirPath, { recursive: true });
             console.log(`Folder created with name '${cleanedCharacterName}'`);
-            cb(null, dirPath);
-         } else {
-            console.log(`Folder with name '${cleanedCharacterName}' already exist!`)
-            cb(new Error(`Folder with name '${cleanedCharacterName}' already exist!`));
          }
+         cb(null, dirPath);
       } else {
          console.log(`Custom avatar creation is not allowed! Custom Avatar value is ${customAvatar}`);
          cb(new Error(`Custom avatar creation is not allowed! Custom Avatar value is ${customAvatar}`));
