@@ -13,7 +13,11 @@ export const getAIResponse = async (characterPersonality, userPrompt, chatHistor
       });
       return response.data;
    } catch (error) {
-      console.error("Error fetching response:", error);
+      if (error.response) {
+         console.error(`${error.response.status}: ${error.response.data}`);
+      } else {
+         console.error("Error fetching response:", error.message);
+      }
       throw error;
    }
 };
@@ -28,7 +32,11 @@ export const getAIEmotion = async (characterName, AIResponse) => {
       });
       return emotion.data;
    } catch (error) {
-      console.error("Error fetching emotion:", error);
+      if (error.response) {
+         console.error(`${error.response.status}: ${error.response.data}`);
+      } else {
+         console.error("Error fetching emotion:", error.message);
+      }
       throw error;
    }
 };
@@ -43,6 +51,11 @@ export const getAvatarEmotion = async (characterEmotionText, hasEmotions) => {
       });
       return avatarEmotion.data;
    } catch (error) {
-      console.error("Error fetching avatar emotion:", error)
+      if (error.response) {
+         console.error(`${error.response.status}: ${error.response.data}`);
+      } else {
+         console.error("Error fetching avatar emotion:", error.message)
+      }
+      throw error;
    }
 };
