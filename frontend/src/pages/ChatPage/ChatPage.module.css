@@ -13,8 +13,11 @@
 }
 
 .emotionBox {
+   box-sizing: border-box;
    width: 90%;
-   height: 5%;
+   min-height: 5%;
+   padding: 10px;
+   margin: 5px 0 3px 0;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -27,6 +30,7 @@
 .avatar {
    width: 93%;
    height: 88%;
+   margin: 3px 0 5px 0;
    border-radius: 15px;
    background-color: #2f2f2f;
    /* background-image: url("../../images/amadeus.png"); */
