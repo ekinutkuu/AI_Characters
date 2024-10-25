@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import style from "./CharacterAdd.module.css";
 import { addCharacter, uploadAvatar } from "../../services/characterService";
+import PopUp from "../../components/PopUp/PopUp";
 
 const CharacterAdd = () => {
    const [name, setName] = useState('');
@@ -8,6 +9,9 @@ const CharacterAdd = () => {
    const [personality, setPersonality] = useState('');
    const [emotions, setEmotions] = useState([]);
    const [customAvatar, setCustomAvatar] = useState(0);
+   const [showPopUp, setShowPopUp] = useState(false);
+   const [popUpMessage, setPopUpMessage] = useState('');
+   const [redirectToCharSelection, setRedirectToCharSelection] = useState(false);
 
    const maxLenghtName = 20;
    const maxLenghtDescription = 35;
@@ -25,20 +29,23 @@ const CharacterAdd = () => {
       label.innerHTML = label.innerHTML.replace(' ✔', '');
 
       if (fileInput.files.length === 0) {
-         alert("Please Select a Avatar!");
+         setPopUpMessage("Please Select a Avatar!");
+         setShowPopUp(true);
          setEmotions(emotions.filter(emotion => emotion !== label.innerHTML.toLowerCase()));
          return;
       }
 
       if (fileInput.files.length > 1) {
-         alert("Only 1 avatar per emotion!");
+         setPopUpMessage("Only 1 avatar per emotion!");
+         setShowPopUp(true);
          setEmotions(emotions.filter(emotion => emotion !== label.innerHTML.toLowerCase()));
          return;
       }
 
       const fileType = fileInput.files[0].type;
       if (!allowedTypes.includes(fileType)) {
-         alert("Only .png type is supported");
+         setPopUpMessage("Only .png type is supported");
+         setShowPopUp(true);
          fileInput.value = "";
          return;
       }
@@ -57,7 +64,8 @@ const CharacterAdd = () => {
 
    const handleAddCharacter = async () => {
       if (name.trim() === "" || description.trim() === "" || personality.trim() === "") {
-         alert("Character name, description, and personality must not be empty!");
+         setPopUpMessage("Character name, description, and personality must not be empty!");
+         setShowPopUp(true);
          return;
       }
 
@@ -71,7 +79,8 @@ const CharacterAdd = () => {
          });
 
          if (!hasFileUploaded) {
-            alert("Please upload at least one avatar for your character!");
+            setPopUpMessage("Please upload at least one avatar for your character!");
+            setShowPopUp(true);
             return;
          }
       }
@@ -102,12 +111,20 @@ const CharacterAdd = () => {
             console.log("Character avatars uploaded successfully!");
          } else console.log(`custom avatar value of '${newCharacter.name}' is ${newCharacter.customAvatar}, default avatar is used`);
 
-         alert("Character added successfully!");
-         window.location.reload();
+         setPopUpMessage("Character added successfully!");
+         setRedirectToCharSelection(true);
+         setShowPopUp(true);
       } catch (error) {
          console.error("Error:", error.message);
-         alert("Failed to add character!");
+         setPopUpMessage("Failed to add character!");
+         setShowPopUp(true);
       }
+   };
+
+   const handleClosePopup = () => {
+      if (redirectToCharSelection) window.location.href = "/";
+      setShowPopUp(false);
+      setPopUpMessage('');
    };
 
    return (
@@ -191,6 +208,8 @@ const CharacterAdd = () => {
             </div>
          </div>
          <button className={style.addButton} onClick={handleAddCharacter}>ADD</button>
+         {/* Pop Up */}
+         {showPopUp && <PopUp message={popUpMessage} closePopup={handleClosePopup} />}
       </div>
    );
 };
