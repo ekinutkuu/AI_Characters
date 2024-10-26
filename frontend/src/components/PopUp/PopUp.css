@@ -37,12 +37,10 @@
    border: 1px solid #747373;
    background-color: #5e5e5e;
    color: #dddddd;
-   /* transform: 0.2s ease-in; */
 }
 
 .popup-content button:hover {
    cursor: pointer;
-   /* transform: scale(1.03); */
 }
 
 @keyframes fadeInScale {

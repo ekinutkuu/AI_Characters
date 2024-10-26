@@ -29,8 +29,6 @@ export const uploadAvatar = async (formData) => {
          },
       });
       console.log(`${response.status}: ${response.data.message}`);
-      console.log(`Uploaded Avatars: ${response.data.files}`);
-      console.log(`Character has these emotions: ${response.data.emotions}`);
       return response.data
    } catch (error) {
       if (error.response) {
