@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect, useCallback} from "react";
 import { useLocation } from 'react-router-dom';
 import style from "./ChatPage.module.css";
 import MessageBubble from "../../components/MessageBubble/MessageBubble";
-import { getAIResponse, getAIEmotion, getAvatarEmotion } from "../../services/chatService";
+import { getAIResponse, getAIEmotion, getAvatarEmotion, getUserLanguage } from "../../services/chatService";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
@@ -56,16 +56,19 @@ const ChatPage = () => {
       ]);
 
       try {
+         // User Language Detection
+         const userLanguage = await getUserLanguage(userInput);
          // Chat Response (and chat history)
          const chatHistory = messages.map(msg => `${msg.isUser ? 'USER' : 'AI'}: ${msg.text}`).join('\n');
-         const aiResponse = await getAIResponse(character.personality, userInput, chatHistory);
+         const aiResponse = await getAIResponse(character.personality, userInput, userLanguage, chatHistory);
          setMessages((prevMessages) => [
             ...prevMessages,
             { text: aiResponse, isUser: false },
          ]);
          console.log(`${chatHistory}\nUSER: ${userInput}\nAI: ${aiResponse}`);
+         console.log("User Language:", userLanguage);
          // Character Emotion Text
-         const aiEmotion = await getAIEmotion(character.name, aiResponse);
+         const aiEmotion = await getAIEmotion(character.name, aiResponse, userLanguage);
          setEmotion(aiEmotion);
          console.log("Emotion:", aiEmotion);
          // Avatar Emotion

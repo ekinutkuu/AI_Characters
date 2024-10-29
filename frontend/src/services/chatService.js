@@ -2,12 +2,31 @@ import axios from "axios";
 
 const BASE_API_URL = "http://localhost:5000";
 
-export const getAIResponse = async (characterPersonality, userPrompt, chatHistory) => {
+export const getUserLanguage = async (userPrompt) => {
+   try {
+      const userLanguage = await axios.get(`${BASE_API_URL}/chat/language`, {
+         params: {
+            userPrompt: userPrompt,
+         },
+      });
+      return userLanguage.data;
+   } catch (error) {
+      if (error.response) {
+         console.error(`${error.response.status}: ${error.response.data}`);
+      } else {
+         console.error("Error fetching user language:", error.message);
+      }
+      throw error;
+   }
+};
+
+export const getAIResponse = async (characterPersonality, userPrompt, userLanguage, chatHistory) => {
    try {
       const response = await axios.get(`${BASE_API_URL}/chat/response`, {
          params: {
             characterPersonality: characterPersonality,
-            userPrompt: userPrompt ,
+            userPrompt: userPrompt,
+            userLanguage: userLanguage,
             chatHistory: chatHistory
          },
       });
@@ -22,12 +41,13 @@ export const getAIResponse = async (characterPersonality, userPrompt, chatHistor
    }
 };
 
-export const getAIEmotion = async (characterName, AIResponse) => {
+export const getAIEmotion = async (characterName, AIResponse, userLanguage) => {
    try {
       const emotion = await axios.get(`${BASE_API_URL}/chat/emotion`, {
          params: {
             characterName: characterName,
-            AIResponse: AIResponse
+            AIResponse: AIResponse,
+            userLanguage: userLanguage
          },
       });
       return emotion.data;

@@ -5,15 +5,35 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const GEMINI_API_KEY = ApiKey.GEMINI_API_KEY;
 
+router.get("/language", async (req, res) => {
+   try {
+      const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+      const { userPrompt } = req.query;
+      const prompt = `Bu metin hangi dilde yazılmıştır?\n"${userPrompt}"\nSadece cevabını ver, noktalama işaretleri kullanma!`;
+      const reponse = await model.generateContent(prompt);
+      const userLanguage = reponse.response.text().replace(/\s+/g, '');
+      res.send(userLanguage);
+   } catch (error) {
+      console.error("Error in /chat/language API:", error);
+      res.status(500).send("ERROR: Failed to receive user language!");
+   }
+});
+
 router.get("/response", async (req, res) => {
    try {
       const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-   
+
+      const { characterPersonality, userPrompt, userLanguage, chatHistory } = req.query;
+
+      responseLanguage = "English"; // default response language
+      if (userLanguage) responseLanguage = userLanguage;
+
       const responseRequest = `Bu kişiliğe sahip birisi olarak, şu prompt'a cevap ver: `;
-      const rules = `KURALLAR: Cevap verirken en fazla 200-250 karakter kullan.`;
+      const rules = `KURALLAR: Cevap verirken en fazla 200-250 karakter kullan. Cevap sadece "${responseLanguage}" dilinde olmalı!`;
    
-      const { characterPersonality, userPrompt, chatHistory } = req.query;
       const fullPrompt = `${rules}\n\n${characterPersonality}\n${responseRequest}\n\n${chatHistory}\nUSER: ${userPrompt}`;
       console.clear();
       console.log(fullPrompt);
@@ -22,6 +42,7 @@ router.get("/response", async (req, res) => {
       //remove text styles (e.g. ** for bold) from gemini api response
       const cleanedResponse = ai_response.response.text().replace(/\*/g, "");
       console.log("AI: "+cleanedResponse, "\n");
+      console.log("User Language:", userLanguage);
       res.send(cleanedResponse);
    } catch (error) {
       console.error("Error in /chat/response API:", error);
@@ -33,17 +54,24 @@ router.get("/emotion", async (req, res) => {
    try {
       const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-   
-      const { characterName, AIResponse } = req.query;
+
+      const { characterName, AIResponse, userLanguage } = req.query;
+
+      responseLanguage = "English"; // default emotion language
+      if (userLanguage) responseLanguage = userLanguage;
+
+      const rules = `KURALLAR: Cevap verirken sadece 1 cümle kullan. Cevap mutlaka "${userLanguage}" dilinde ve belirtilen formatta olmalı! Yanıtında yalnızca "${userLanguage}" dilinde ifadeler kullan; başka bir dil kesinlikle kullanma.`;
       const prompt =
-      `Bir konuşmada bu cevabı veren kişi nasıl hissediyordur?
-      Şu örneklere benzer kısa (bir cümle) ve yaratıcı bir şekilde cevap vermeni istiyorum:
-      "${characterName} kendine güveniyor.", "${characterName} küçümseyici bir şekilde bakıyor."
-      Konuşmada verilen cevap: "${AIResponse}"`;
+      `${rules}\n
+      Bir konuşmada bu cevabı veren kişi nasıl hissediyordur?
+      Şu örneklere benzer formatta kısa ve yaratıcı bir şekilde cevap vermeni istiyorum:
+      "{İsim}, kendine güveniyor.", "{İsim}, küçümseyici bir şekilde bakıyor."\n
+      Konuşmada verilen cevap: "${AIResponse.trim()}"
+      İsim: "${characterName}"`;
       emotion = await model.generateContent(prompt);
-   
+
       //remove text styles (e.g. ** for bold) from gemini api response
-      const cleanedText = emotion.response.text().replace(/\*/g, "");
+      const cleanedText = emotion.response.text().trim().replace(/\*/g, "");
       console.log("Emotion:", cleanedText);
       res.send(cleanedText);
    } catch (error) {
