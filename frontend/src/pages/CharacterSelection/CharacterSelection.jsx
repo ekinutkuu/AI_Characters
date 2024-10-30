@@ -34,6 +34,8 @@ const CharacterSelection = () => {
                   key={index}
                   name={character.name}
                   description={character.description}
+                  emotions={character.emotions}
+                  customAvatar={character.customAvatar}
                   onClick={() => handleCharacterSelect(character)}
                />
             ))}
