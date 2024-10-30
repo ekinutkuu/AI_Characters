@@ -57,10 +57,10 @@ router.get("/emotion", async (req, res) => {
 
       const { characterName, AIResponse, userLanguage } = req.query;
 
-      responseLanguage = "English"; // default emotion language
-      if (userLanguage) responseLanguage = userLanguage;
+      emotionLanguage = "English"; // default emotion language
+      if (userLanguage) emotionLanguage = userLanguage;
 
-      const rules = `KURALLAR: Cevap verirken sadece 1 cümle kullan. Cevap mutlaka "${userLanguage}" dilinde ve belirtilen formatta olmalı! Yanıtında yalnızca "${userLanguage}" dilinde ifadeler kullan; başka bir dil kesinlikle kullanma.`;
+      const rules = `KURALLAR: Cevap verirken sadece 1 cümle kullan. Cevap mutlaka "${emotionLanguage}" dilinde ve belirtilen formatta olmalı! Yanıtında yalnızca "${userLanguage}" dilinde ifadeler kullan; başka bir dil kesinlikle kullanma.`;
       const prompt =
       `${rules}\n
       Bir konuşmada bu cevabı veren kişi nasıl hissediyordur?
