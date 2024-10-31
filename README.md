@@ -5,6 +5,14 @@ This project allows you to chat with AI characters with unique personalities and
 	</p>
 </p>
 
+<p align="center">
+    <b>🎬<a href="https://www.youtube.com/watch?v=yPxERx36ylQ">See how it works!</a></b>
+</p>
+
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=yPxERx36ylQ"> <img src="screenshots/home.png" alt="" width="600" height="auto" /> </a>
+</p>
+
 ## Dependencies:
 
  - Node v20.17.0
