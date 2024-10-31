@@ -10,7 +10,7 @@ This project allows you to chat with AI characters with unique personalities and
 </p>
 
 <p align="center">
-    <a href="https://www.youtube.com/watch?v=yPxERx36ylQ"> <img src="screenshots/home.png" alt="" width="600" height="auto" /> </a>
+    <a href="https://www.youtube.com/watch?v=yPxERx36ylQ"> <img src="screenshots/home.png" alt="" width="90%" height="auto" /> </a>
 </p>
 
 ## Dependencies:
@@ -19,7 +19,7 @@ This project allows you to chat with AI characters with unique personalities and
  - React v18.3.1
  - npm v10.8.3
 
-## Getting started
+## Getting Started
 
 - If you don't have necessary dependencies, please install them.
 <br />
