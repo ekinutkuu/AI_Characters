@@ -28,7 +28,7 @@ router.get("/response", async (req, res) => {
 
       const { characterPersonality, userPrompt, userLanguage, chatHistory } = req.query;
 
-      responseLanguage = "English"; // default response language
+      let responseLanguage = "English"; // default response language
       if (userLanguage) responseLanguage = userLanguage;
 
       const responseRequest = `Bu kişiliğe sahip birisi olarak, şu prompt'a cevap ver: `;
@@ -53,11 +53,11 @@ router.get("/response", async (req, res) => {
 router.get("/emotion", async (req, res) => {
    try {
       const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
       const { characterName, AIResponse, userLanguage } = req.query;
 
-      emotionLanguage = "English"; // default emotion language
+      let emotionLanguage = "English"; // default emotion language
       if (userLanguage) emotionLanguage = userLanguage;
 
       const rules = `KURALLAR: Cevap verirken sadece 1 cümle kullan. Cevap mutlaka "${emotionLanguage}" dilinde ve belirtilen formatta olmalı! Yanıtında yalnızca "${userLanguage}" dilinde ifadeler kullan; başka bir dil kesinlikle kullanma.`;
@@ -65,10 +65,11 @@ router.get("/emotion", async (req, res) => {
       `${rules}\n
       Bir konuşmada bu cevabı veren kişi nasıl hissediyordur?
       Şu örneklere benzer formatta kısa ve yaratıcı bir şekilde cevap vermeni istiyorum:
-      "{İsim}, kendine güveniyor.", "{İsim}, küçümseyici bir şekilde bakıyor."\n
+      "{İsim}, kendine güveniyor.", "{İsim}, alaycı bir gülümseme ile bakıyor."\n
       Konuşmada verilen cevap: "${AIResponse.trim()}"
       İsim: "${characterName}"`;
-      emotion = await model.generateContent(prompt);
+
+      const emotion = await model.generateContent(prompt);
 
       //remove text styles (e.g. ** for bold) from gemini api response
       const cleanedText = emotion.response.text().trim().replace(/\*/g, "");
@@ -95,7 +96,7 @@ router.get("/avatar", async (req, res) => {
          \n- ${hasEmotions.join('\n- ')}
          \nCevap olarak sadece seçtiğin seçeneği ver, noktalama işaretleri kullanma.`;
    
-         avatarResponse = await model.generateContent(prompt);
+         const avatarResponse = await model.generateContent(prompt);
          const avatarEmotion = avatarResponse.response.text().replace(/\s+/g, '').toLowerCase();
          console.log("Avatar Emotion:", avatarEmotion);
          res.send(avatarEmotion);
