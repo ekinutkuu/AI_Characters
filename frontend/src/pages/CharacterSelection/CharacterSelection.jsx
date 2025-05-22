@@ -26,7 +26,7 @@ const CharacterSelection = () => {
             <button className={style.button} onClick={() => navigate("/character/add")}>
                <FontAwesomeIcon icon={faPlus} />
             </button>
-            <button className={style.button}><FontAwesomeIcon icon={faPenToSquare} /></button>
+            {/* <button className={style.button}><FontAwesomeIcon icon={faPenToSquare} /></button> */}
          </div>
          <div className={style.characterCards}>
             {characters.map((character, index) => (
