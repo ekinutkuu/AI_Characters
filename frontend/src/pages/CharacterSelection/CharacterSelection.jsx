@@ -17,7 +17,7 @@ const CharacterSelection = () => {
 
    const handleCharacterSelect = (character) => {
       console.log('Selected character:', character);
-      navigate(`/chat/${character.name.toLowerCase()}`, { state: { character } });
+      navigate(`/chat/${character.name.toLowerCase().replace(/\s+/g, '_')}`, { state: { character } });
    };
 
    return (
