@@ -1,35 +1,41 @@
 .buttons{
-   height: 40px;
-   padding: 10px;
-   margin-top: 70px;
+   position: fixed;
+   bottom: 40px;
+   right: 40px;
    display: flex;
-   justify-content: end;
+   justify-content: center;
    align-items: center;
+   z-index: 1000;
 }
 
 .button{
-   width: 85px;
-   height: 40px;
-   margin: 0 10px;
+   width: 75px;
+   height: 75px;
    border: none;
-   border-radius: 10px;
-   background-color: #252525;
-   color: #adadad;
-   font-size: 18px;
-   transition: 0.1s ease;
+   border-radius: 50%;
+   background-color: #919191;
+   color: #ffffff;
+   font-size: 32px;
+   transition: all 0.3s ease;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+   display: flex;
+   justify-content: center;
+   align-items: center;
 }
 
 .button:hover {
    cursor: pointer;
    transform: scale(1.1);
-   background-color: #292929;
-   box-shadow: 0 0 5px 0 #aaaaaa;
+   background-color: #a1a1a1;
+   color: #ffffff;
+   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
 .characterCards {
    display: flex;
    flex-wrap: wrap;
-   padding: 10px;
+   padding: 20px 10px;
+   margin: 20px 0;
 }
 
 /* Responsive Design */
