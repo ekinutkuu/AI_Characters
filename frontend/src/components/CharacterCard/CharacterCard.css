@@ -53,6 +53,18 @@
 }
 
 /* Responsive Design */
+@media only screen and (max-width: 1200px) {
+   .characterCard {
+      width: calc(33.33% - 40px);
+   }
+}
+
+@media only screen and (max-width: 992px) {
+   .characterCard {
+      width: calc(50% - 40px);
+   }
+}
+
 @media only screen and (max-width: 768px) {
    .characterCard {
       width: 100%;
